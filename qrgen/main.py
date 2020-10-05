@@ -1,11 +1,12 @@
 import os
 import tkinter as tk
+from tkinter import messagebox
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 
 #The main root class
 class Root(tk.Tk):
-    global BASE_DIR
+    global THIS_FOLDER
     def __init__(self, *args, **kwargs):
         super().__init__()
         self.title("QR - Code Generator")
@@ -13,7 +14,7 @@ class Root(tk.Tk):
         self.minsize(644,644)
         self.maxsize(644,1200)
         
-        self.wm_iconbitmap(os.path.join(BASE_DIR, 'qrgen','static','images','logo.ico'))
+        self.wm_iconbitmap(os.path.join(THIS_FOLDER,'static','images','logo.ico'))
 
 
 #The Title frame
@@ -89,12 +90,20 @@ class EntryInput(tk.Frame):
         self.submit.grid(row=2,column=1,columnspan=2,pady=25,padx=2)
     
     def say_hi(self):
+        import pyqrcode
+
         #Getting the data
         title = self.datavalue.get()
-        print(title)
+        files_logo = os.listdir(os.path.join(os.path.dirname(THIS_FOLDER), 'logo'))
+        if title in ('',None): 
+            messagebox.showerror('No Data Found!!!',"No data was given in order to get encoded, so please try again!!!")
+            return False
         self.progress['value'] = 20
         self.update_idletasks()
-    
+
+
+#The error of no data
+
 
 #the Image display frame
 class QRCodeImageShow(tk.Frame):
@@ -108,7 +117,7 @@ class QRCodeImageShow(tk.Frame):
 #__main__
 if __name__ == '__main__':
     root = Root()
-    if not os.path.isdir(os.path.join('qrcode_images')): os.mkdir(os.path.join(BASE_DIR,'qrcode_images'))
+    if not os.path.isdir(os.path.join('qrcode_images')): os.mkdir(os.path.join(THIS_FOLDER,'qrcode_images'))
 
     title = Title(master=root)
     app = EntryInput(master=root)
