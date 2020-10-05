@@ -53,37 +53,13 @@ class EntryInput(tk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
+        from tkinter.ttk import Progressbar
         self.data = tk.Label(
             self, 
             text="Data to be Encoded :",
             justify="left",
             font = ("Arial",18),
         )
-
-        self.datavalue = tk.StringVar()
-        self.datarentry = tk.Entry(
-            self, 
-            textvariable = self.datavalue,
-            font = ("Times New Roman",18),
-        )
-        
-        self.data['pady'] = self.data['padx'] = 34
-
-        self.datarentry.pack(side="right")
-        self.data.pack(side="left",anchor="w")
-
-
-#Submit Button frame
-class SubmitButton(tk.Frame):
-    def __init__(self, master=None):
-        super().__init__(master)
-        self.master = master
-        self.pack()
-        self.create_widgets()
-    
-    def create_widgets(self):
-        from tkinter.ttk import Progressbar
-        
         self.progress = Progressbar(
             self, 
             orient = 'horizontal', 
@@ -98,24 +74,27 @@ class SubmitButton(tk.Frame):
             command=self.say_hi,
             width=40
         )
-        
 
-        self.progress.pack(
-            side="top",
-            anchor='n',
-            padx =34
+        self.datavalue = tk.StringVar()
+        self.datarentry = tk.Entry(
+            self, 
+            textvariable = self.datavalue,
+            font = ("Times New Roman",18),
         )
-        self.submit.pack(
-            side="bottom",
-            anchor='s',
-            pady = 25,
-            padx =34,
-        )
+        self.data['pady'] = 34
+
+        self.data.grid(row=0,column = 1, pady = 2, padx=2)
+        self.datarentry.grid(row=0,column = 2, pady = 2,padx=2)
+        self.progress.grid(row=1,column=1,columnspan=2)
+        self.submit.grid(row=2,column=1,columnspan=2,pady=25,padx=2)
     
     def say_hi(self):
+        #Getting the data
+        title = self.datavalue.get()
+        print(title)
         self.progress['value'] = 20
         self.update_idletasks()
-
+    
 
 #the Image display frame
 class QRCodeImageShow(tk.Frame):
@@ -133,6 +112,5 @@ if __name__ == '__main__':
 
     title = Title(master=root)
     app = EntryInput(master=root)
-    submit = SubmitButton(master=root)
     
     root.mainloop()
