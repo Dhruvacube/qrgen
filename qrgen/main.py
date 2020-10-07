@@ -126,7 +126,7 @@ class EntryInput(tk.Frame):
         self.progress.grid(row=2,column=1,columnspan=2,pady=15)
         self.submit.grid(row=3,column=1,columnspan=2,pady=25,padx=2)
 
-    #Qrcode generation function
+    #QR code generation function
     def gen_qr_code(self):
         global BASE_DIR, qrcodefilename
 
@@ -134,7 +134,7 @@ class EntryInput(tk.Frame):
         
         #Error generation
         if self.dataenc in ('',None): 
-            messagebox.showerror('No Data Found!!!',"No data was given in order to get encoded, so please try again!!!")
+            messagebox.showerror('No Data Found!',"No data provided, please try again!")
             return False
         
         #Getting the data
@@ -143,7 +143,7 @@ class EntryInput(tk.Frame):
         self.progress['value'] = 20
         self.update_idletasks()
 
-        #Qrcode generation
+        #QR code generation
         self.x = datetime.now()
         try:
             self.filename = str(self.x.strftime("%a"))+ str(self.x.strftime("%f")) +  self.dataenc[0] + self.dataenc[1] +".png"
@@ -218,7 +218,7 @@ class EntryInput(tk.Frame):
         QRCodeImageShow(master=self.master)
 
 
-#the Image display frame
+#The image display frame
 class QRCodeImageShow(tk.Toplevel):
     def __init__(self, master=None):
         super().__init__(master)
