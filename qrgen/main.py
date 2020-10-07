@@ -1,10 +1,15 @@
 import os
 import tkinter as tk
+from datetime import datetime
 from tkinter import messagebox
 from tkinter.filedialog import askopenfilename
 from tkinter.ttk import Progressbar
 
+import pyqrcode
+from PIL import Image
+
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(THIS_FOLDER)
 
 #The main root class
 class Root(tk.Tk):
@@ -60,7 +65,7 @@ class EntryInput(tk.Frame):
     def logoupload(self):
         global THIS_FOLDER
         self.logofilepath = askopenfilename(
-            initialdir = os.path.join(os.path.dirname(THIS_FOLDER),'logo'),
+            initialdir = os.path.join(BASE_DIR,'logo'),
             title = "choose your image file",
             filetypes = (("jpeg files","*.jpg"),("all files","*.*"))
         )
@@ -123,19 +128,68 @@ class EntryInput(tk.Frame):
 
     #Qrcode generation function
     def gen_qr_code(self):
-        import pyqrcode
-        print(self.logofilepath)
+        global BASE_DIR
 
-        #Getting the data
-        title = self.datavalue.get()
-        files_logo = os.listdir(os.path.join(os.path.dirname(THIS_FOLDER), 'logo'))
+        self.dataenc = self.datavalue.get()
         
         #Error generation
-        if title in ('',None): 
+        if self.dataenc in ('',None): 
             messagebox.showerror('No Data Found!!!',"No data was given in order to get encoded, so please try again!!!")
             return False
         
+        #Getting the data
+        self.files_logo = os.listdir(os.path.join(BASE_DIR, 'logo'))
+        
         self.progress['value'] = 20
+        self.update_idletasks()
+
+        #Qrcode generation
+        self.x = datetime.now()
+        self.filename = str(self.x.strftime("%a"))+ str(self.x.strftime("%f")) +  self.dataenc[0] + self.dataenc[1] +".png"
+
+        self.progress['value'] = 50
+        self.update_idletasks()
+        
+        self.url = pyqrcode.QRCode(self.dataenc, error='H')
+        self.url.png(os.path.join(BASE_DIR, 'qrcode_images', self.filename), scale=10)
+
+        self.progress['value'] = 60
+        self.update_idletasks()
+        
+        self.im = Image.open(os.path.join(BASE_DIR, 'qrcode_images',self.filename))
+        self.im = self.im.convert("RGBA")
+
+        self.progress['value'] = 65
+        self.update_idletasks()
+
+        if self.logofilepath not in ('',' ',None):
+            print(self.logofilepath)
+            self.progress['value'] = 80
+            self.update_idletasks()
+
+            self.logo1 = Image.open(self.logofilepath)
+            self.width, self.height = self.im.size
+            
+            # How big the logo we want to put in the qr code png
+            self.logo_size = 100
+            
+            self.progress['value'] = 85
+            self.update_idletasks()
+
+            # Calculate xmin, ymin, xmax, ymax to put the logo
+            self.xmin = self.ymin = int((self.width / 2) - (self.logo_size / 2))
+            self.xmax = self.ymax = int((self.width / 2) + (self.logo_size / 2))
+
+            self.region = self.logo1
+            self.region = self.region.resize((self.xmax - self.xmin, self.ymax - self.ymin))
+            self.im.paste(self.region, (self.xmin, self.ymin, self.xmax, self.ymax))
+
+            self.progress['value'] = 100
+            self.update_idletasks()
+
+            self.im.save(os.path.join(BASE_DIR, 'qrcode_images', self.filename), scale=10)
+        
+        self.progress['value'] = 100
         self.update_idletasks()
 
 
@@ -151,7 +205,8 @@ class QRCodeImageShow(tk.Frame):
 #__main__
 if __name__ == '__main__':
     root = Root()
-    if not os.path.isdir(os.path.join('qrcode_images')): os.mkdir(os.path.join(THIS_FOLDER,'qrcode_images'))
+    if not os.path.isdir(os.path.join(BASE_DIR,'qrcode_images')): os.mkdir(os.path.join(BASE_DIR,'qrcode_images'))
+    if not os.path.isdir(os.path.join(BASE_DIR,'logo')): os.mkdir(os.path.join(BASE_DIR,'logo'))
 
     title = Title(master=root)
     app = EntryInput(master=root)
