@@ -6,10 +6,11 @@ from tkinter.filedialog import askopenfilename
 from tkinter.ttk import Progressbar
 
 import pyqrcode
-from PIL import Image
+from PIL import Image, ImageTk
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(THIS_FOLDER)
+qrcodefilename = ""
 
 #The main root class
 class Root(tk.Tk):
@@ -110,11 +111,10 @@ class EntryInput(tk.Frame):
         self.data['height'] = 4
 
         #Checkbox for the center logo
-        self.logocheckbox = tk.Checkbutton(
+        self.logobutton = tk.Button(
             self,
-            text="Want to put the logo at center?", 
-            variable = self.logo,
-            highlightcolor='#ebab34',
+            text="Upload Logo", 
+            bg='#ebab34',
             font=("Arial",15,"bold"),
             command=self.logoupload
         )
@@ -122,13 +122,13 @@ class EntryInput(tk.Frame):
         #Packing the elements in a grid
         self.data.grid(row=0,column = 1, padx=2)
         self.datarentry.grid(row=0,column = 2,padx=2)
-        self.logocheckbox.grid(row=1,column = 1,pady = 2,columnspan=2)        
-        self.progress.grid(row=2,column=1,columnspan=2)
+        self.logobutton.grid(row=1,column = 1,pady = 2,columnspan=2)        
+        self.progress.grid(row=2,column=1,columnspan=2,pady=15)
         self.submit.grid(row=3,column=1,columnspan=2,pady=25,padx=2)
 
     #Qrcode generation function
     def gen_qr_code(self):
-        global BASE_DIR
+        global BASE_DIR, qrcodefilename
 
         self.dataenc = self.datavalue.get()
         
@@ -145,7 +145,10 @@ class EntryInput(tk.Frame):
 
         #Qrcode generation
         self.x = datetime.now()
-        self.filename = str(self.x.strftime("%a"))+ str(self.x.strftime("%f")) +  self.dataenc[0] + self.dataenc[1] +".png"
+        try:
+            self.filename = str(self.x.strftime("%a"))+ str(self.x.strftime("%f")) +  self.dataenc[0] + self.dataenc[1] +".png"
+        except:
+            self.filename = str(self.x.strftime("%a"))+ str(self.x.strftime("%f")) +  self.dataenc[0] +".png"
 
         self.progress['value'] = 50
         self.update_idletasks()
@@ -191,15 +194,50 @@ class EntryInput(tk.Frame):
         
         self.progress['value'] = 100
         self.update_idletasks()
+        qrcodefilename = self.filename
+
+        tk.Label(
+            self, 
+            text=f"DRIVE NAME : {BASE_DIR}",
+            justify="left",
+            font = ("Arial",18),
+        ).grid(row=4,column=1,columnspan=2)
+        tk.Label(
+            self, 
+            text="Folder : qrcode_images",
+            justify="left",
+            font = ("Arial",18),
+        ).grid(row=5,column=1,columnspan=2)
+        tk.Label(
+            self, 
+            text=f"Filename of the qrcode : {self.filename}.png",
+            justify="left",
+            font = ("Arial",18),
+        ).grid(row=6,column=1,columnspan=2)
+
+        QRCodeImageShow(master=self.master)
 
 
 #the Image display frame
-class QRCodeImageShow(tk.Frame):
+class QRCodeImageShow(tk.Toplevel):
     def __init__(self, master=None):
         super().__init__(master)
+        global qrcodefilename, BASE_DIR
+        
         self.master = master
-        self.pack()
-        self.create_widgets()
+        self.resizable(0,0)
+        self.title("QR - Code generated - "+qrcodefilename)
+        self.wm_iconbitmap(os.path.join(THIS_FOLDER,'static','images','logo.ico'))
+        
+        #Packing the Image        
+        self.image = Image.open(os.path.join(BASE_DIR, 'qrcode_images',qrcodefilename))
+        self.photo = ImageTk.PhotoImage(self.image,
+            size=40,
+        )
+        self.imagelabel = tk.Label(
+            self,
+            image=self.photo,
+        ).grid(row=4,column=2,columnspan=2,pady=25,padx=2)        
 
 
 #__main__
