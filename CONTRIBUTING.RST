@@ -2,7 +2,7 @@
 ``CONTRIBUTION GUIDELINES``
 ==================
 
-This is the official CONTRIBUTION GUIDELINES of 24 Ave Pizza QR Code Generator repository made in Python3.8 using tkinter module.
+This is the official CONTRIBUTION GUIDELINES of the 24 Ave Pizza QR Code Generator repository made in Python3.8 using the tkinter module.
 
 
 PR Accepted
@@ -25,4 +25,4 @@ The follwowing PR categories are not accepted/ will be marked as spammed:
 
 ``NOTE``
 ============
-All the Pull Requests which are made and accepted in the period of the Oct 1, 2020 to Oct 31, 2020 will be labbeld as ``hacktoberfest-accepted``
+All the Pull Requests which are made and accepted in the period of the Oct 1, 2020 to Oct 31, 2020 will be labelled as ``hacktoberfest-accepted``
