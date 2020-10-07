@@ -2,7 +2,7 @@
 ``QRGEN`` (Official QR Code website repository of 24 AvePizza)
 ==================
 
-This is the official repository of 24 Ave Pizza QR Code Generator made in Python3.8 using tkinter module.
+This is the official repository of 24 Ave Pizza QR Code Generator made in Python3.8 using the tkinter module.
 
 
 Installation
