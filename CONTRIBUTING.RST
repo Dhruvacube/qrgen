@@ -7,13 +7,13 @@ This is the official CONTRIBUTION GUIDELINES of the 24 Ave Pizza QR Code Generat
 
 PR Accepted
 ============
-The follwowing PR categories are accepted:
+The following PR categories are accepted:
 
 * Betterment of the GUI
 * Minor/Major changes in GUI (only after a reviewing by our panels members)
 * Typos/Errors in spellings
 * Improvement in the documentation
-* Imporeved functions/classes
+* Improved functions/classes
 
 PR ``Not`` Accepted / Unaccepted
 ============
