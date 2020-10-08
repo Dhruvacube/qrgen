@@ -48,6 +48,19 @@ Quickstart
 * The ``images(qr code)`` generated are stored in ``folder`` named ``qrcode pictures``
 
 
+==================
+NOTE for the beginners
+==================
+* Use the following commands to update your fork of this repository::
+
+    git remote add upstream https://github.com/24avepizza/qrgen.git
+    git fetch upstream
+    git checkout main
+    git reset --hard upstream/main
+    git push origin main --force
+    git push -f origin main
+
+
 Credits
 =========
 
