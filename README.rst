@@ -28,6 +28,10 @@ Installation
 
 Quickstart
 ==========
+* ``qrgen`` folder contains the source code and binary compiled source is in ``compiled_binary\windows`` folder.
+
+* ``Till now only for the Microsoft Windows Operating System the compiled binary code is available``
+
 * There will be a compressed file named ``exemain`` , extract it and run the main.exe file.
 
 * If not then run the main.py file but ``to run it python3.8 must be installed``
@@ -41,7 +45,7 @@ Quickstart
     python main.py
 
 
-* The ``imagees/qr code`` generated are stored in ``folder`` named ``qrcode pictures``
+* The ``images(qr code)`` generated are stored in ``folder`` named ``qrcode pictures``
 
 
 Credits
