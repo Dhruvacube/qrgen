@@ -196,26 +196,8 @@ class EntryInput(tk.Frame):
         self.update_idletasks()
         qrcodefilename = self.filename
 
-        tk.Label(
-            self, 
-            text=f"DRIVE NAME : {BASE_DIR}",
-            justify="left",
-            font = ("Arial",18),
-        ).grid(row=4,column=1,columnspan=2)
-        tk.Label(
-            self, 
-            text="Folder : qrcode_images",
-            justify="left",
-            font = ("Arial",18),
-        ).grid(row=5,column=1,columnspan=2)
-        tk.Label(
-            self, 
-            text=f"Filename of the qrcode : {self.filename}.png",
-            justify="left",
-            font = ("Arial",18),
-        ).grid(row=6,column=1,columnspan=2)
-
         QRCodeImageShow(master=self.master)
+        FileDisplayShow(master=self.master)
 
 
 #The image display frame
@@ -237,7 +219,38 @@ class QRCodeImageShow(tk.Toplevel):
         self.imagelabel = tk.Label(
             self,
             image=self.photo,
-        ).grid(row=4,column=2,columnspan=2,pady=25,padx=2)        
+        ).grid(row=4,column=2,columnspan=2,pady=25,padx=2)   
+
+#The file display frame
+class FileDisplayShow(tk.Toplevel):
+    def __init__(self, master=None):
+        super().__init__(master)
+        global qrcodefilename, BASE_DIR
+        
+        self.master = master
+        self.resizable(0,0)
+        self.title("QR - Code generated Filepath - "+qrcodefilename)
+        self.wm_iconbitmap(os.path.join(THIS_FOLDER,'static','images','logo.ico'))
+        
+        #Packing the Image        
+        tk.Label(
+            self, 
+            text=f"DRIVE NAME : {BASE_DIR}",
+            justify="left",
+            font = ("Arial",18),
+        ).grid(row=4,column=1,columnspan=2)
+        tk.Label(
+            self, 
+            text="Folder : qrcode_images",
+            justify="left",
+            font = ("Arial",18),
+        ).grid(row=5,column=1,columnspan=2)
+        tk.Label(
+            self, 
+            text=f"Filename of the qrcode : {qrcodefilename}.png",
+            justify="left",
+            font = ("Arial",18),
+        ).grid(row=6,column=1,columnspan=2)   
 
 
 #__main__
